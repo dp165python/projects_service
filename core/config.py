@@ -25,7 +25,7 @@ def postgres_uri():
     #         host=DBHOST,
     #         port=DBPORT,
     #         db=DBNAME)
-    return 'postgresql://arthur:arthur234@localhost/projects'
+    return 'postgresql://eugene:1401@localhost/projects'
 
 
 def create_app():
