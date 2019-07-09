@@ -3,29 +3,28 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 
-from .api import api
+from core.api import api
 
 
-DBUSER = 'postgres'
-DBPASS = ''
-DBHOST = 'db'
-DBPORT = '5432'
-DBNAME = 'postgres'
+DBUSER = 'arthur'
+DBPASS = 'arthur234'
+DBHOST = 'localhost'
+DBPORT = ''
+DBNAME = 'projects'
 
 db = SQLAlchemy()
 migrate = Migrate()
 
 
 def postgres_uri():
-    # if os.getenv("DOCKER"):
-    #     return 'postgresql://postgres@db_projects_service:5432/postgres'
-    # return 'postgresql://{user}:{passwd}@{host}:{port}/{db}'.format(
-    #         user=DBUSER,
-    #         passwd=DBPASS,
-    #         host=DBHOST,
-    #         port=DBPORT,
-    #         db=DBNAME)
-    return 'postgresql://arthur:arthur234@localhost/projects'
+    if os.getenv("DOCKER"):
+        return 'postgresql://postgres@db_projects_service:5432/postgres'
+    return 'postgresql://{user}:{passwd}@{host}/{db}'.format(
+            user=DBUSER,
+            passwd=DBPASS,
+            host=DBHOST,
+            port=DBPORT,
+            db=DBNAME)
 
 
 def create_app():

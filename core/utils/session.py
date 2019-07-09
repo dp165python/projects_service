@@ -3,7 +3,7 @@ from contextlib import contextmanager
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 
-from ..config import postgres_uri
+from core.config import postgres_uri
 
 
 engine = sqlalchemy.create_engine(postgres_uri())

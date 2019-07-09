@@ -1,7 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
 
-from .config import db
+from core.config import db
 
 
 class Projects(db.Model):

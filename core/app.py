@@ -1,6 +1,15 @@
-from .config import create_app
-from .api import api_blueprint, api
-from .controller import DataHandler, ProjectsInitializer, ProjectsResources, StatusUpdater, ProjectsCalc
+from core.config import create_app
+from core.api import api_blueprint, api
+
+
+from core.resources.projects_initializer import ProjectsInitializer
+from core.resources.projects_resources import ProjectsResources
+
+from core.resources.status_updater import StatusUpdater
+from core.resources.data_handler import DataHandler
+
+from core.resources.projects_calc import ProjectsCalc
+
 
 app = create_app()
 app.register_blueprint(api_blueprint)
