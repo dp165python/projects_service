@@ -1,6 +1,7 @@
 from .config import create_app
 from .api import api_blueprint, api
-from .controller import DataHandler, ProjectsInitializer, ProjectsResources, StatusUpdater, ProjectsCalc
+from .controller import DataHandler, ProjectsInitializer, ProjectsResources, StatusUpdater, ProjectsCalculation
+from .controller import ProjectsCalculation, ProjectsCalculationPage
 
 app = create_app()
 app.register_blueprint(api_blueprint)
@@ -11,4 +12,5 @@ api.add_resource(ProjectsResources, '/projects/<id>')
 api.add_resource(DataHandler, '/projects/<id>/data')
 api.add_resource(StatusUpdater, '/projects/<id>/status')
 
-api.add_resource(ProjectsCalc, '/projects/<id>/calculations')
+api.add_resource(ProjectsCalculation, '/projects/<id>/calculations')
+api.add_resource(ProjectsCalculationPage, '/projects/<id>/calculations/<int:page_num>')

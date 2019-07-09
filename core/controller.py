@@ -1,6 +1,6 @@
 import uuid
 
-from flask import request, abort
+from flask import request, abort, jsonify
 from flask_restful import Resource
 
 from .models import Projects, Data
@@ -104,12 +104,7 @@ class DataHandler(Resource):
                     field_2=data['field_2'],
                     field_3=data['field_3'],
                     field_4=data['field_4'],
-                    field_5=data['field_5'],
-                    field_6=data['field_6'],
-                    field_7=data['field_7'],
-                    field_8=data['field_8'],
-                    field_9=data['field_9'],
-                    field_10=data['field_10']
+                    field_5=data['field_5']
                 )
                 db.add(project_data)
 
@@ -117,7 +112,7 @@ class DataHandler(Resource):
 
 
 # /projects/<id>/calculations
-class ProjectsCalc(Resource):
+class ProjectsCalculation(Resource):
     def get(self, id):
 
         """
@@ -156,3 +151,62 @@ class ProjectsCalc(Resource):
             return {"message": "No input data provided"}, 400
         result = entry_data["result"]
         return {"result": result}, 200
+
+
+# class ProjectsCalculationPage(Resource):
+#     def get(self, id, page_num):
+#
+#         """
+#         Method to fetch data of the particular project for calculation
+#         :param id: an id of the project
+#         """
+#         project = Projects.query.filter_by(id=id).first()
+#         if not project:
+#             abort(404, "No such project")
+#
+#         new_status = "calculation"
+#         with session() as db:
+#             db.query(Projects).filter(Projects.id == id). \
+#                 update({'status': new_status})
+#
+#         data = Data.query.filter_by(project_id=id).paginate(per_page=5, page=page_num, error_out=True)
+#         if not data:
+#             abort(400, "No input data provided")
+#
+#         return {'project': project_schema.dump(project).data, 'data': nested_schema.dump(data, many=True).data}, 200
+
+class ProjectsCalculationPage(Resource):
+    def get(self, id, page_num):
+        paginated = self.get_paginated_list(Data, '/projects/<id>/calculations/page',
+                                          start=request.args.get('start', 1),
+                                          limit=request.args.get('limit', 3))
+        return {'data': nested_schema.dump(paginated, many=True).data}, 200
+
+    def get_paginated_list(self, klass, url, start, limit):
+        # check if page exists
+        results = klass.query.all()
+        count = len(results)
+        if (count < start):
+            abort(404)
+        # make response
+        obj = {}
+        obj['start'] = start
+        obj['limit'] = limit
+        obj['count'] = count
+        # make URLs
+        # make previous url
+        if start == 1:
+            obj['previous'] = ''
+        else:
+            start_copy = max(1, start - limit)
+            limit_copy = start - 1
+            obj['previous'] = url + '?start=%d&limit=%d' % (start_copy, limit_copy)
+        # make next url
+        if start + limit > count:
+            obj['next'] = ''
+        else:
+            start_copy = start + limit
+            obj['next'] = url + '?start=%d&limit=%d' % (start_copy, limit)
+        # finally extract result according to bounds
+        obj['results'] = results[(start - 1):(start - 1 + limit)]
+        return obj
