@@ -20,8 +20,3 @@ class Data(db.Model):
     field_3 = db.Column(db.Float())
     field_4 = db.Column(db.Integer())
     field_5 = db.Column(db.String(80))
-    field_6 = db.Column(db.Float())
-    field_7 = db.Column(db.Integer())
-    field_8 = db.Column(db.Integer())
-    field_9 = db.Column(db.Integer())
-    field_10 = db.Column(db.String(80))
