@@ -2,46 +2,36 @@ import uuid
 
 from flask import request
 from flask_restful import Resource, abort
+from flask_paginate import Pagination, get_page_parameter
 
-from core.models import Data
+from core.models import Data, Projects
 from core.utils.schemas import DataNestedSchema
+from core.utils.session import session
 
 
-nested_schema = DataNestedSchema()
-
-
+# /projects/<id>/calculations/<int:page_num>
 class ProjectsCalculationPage(Resource):
-    def get(self, id, page_num):
-        paginated = self.get_paginated_list(Data, '/projects/<id>/calculations/page',
-                                            start=request.args.get('start', 1),
-                                            limit=request.args.get('limit', 3))
-        return {'data': nested_schema.dump(paginated, many=True).data}, 200
+    nested_schema = DataNestedSchema()
 
-    def get_paginated_list(self, klass, url, start, limit):
-        # check if page exists
-        results = klass.query.all()
-        count = len(results)
-        if (count < start):
-            abort(404)
-        # make response
-        obj = {}
-        obj['start'] = start
-        obj['limit'] = limit
-        obj['count'] = count
-        # make URLs
-        # make previous url
-        if start == 1:
-            obj['previous'] = ''
-        else:
-            start_copy = max(1, start - limit)
-            limit_copy = start - 1
-            obj['previous'] = url + '?start=%d&limit=%d' % (start_copy, limit_copy)
-        # make next url
-        if start + limit > count:
-            obj['next'] = ''
-        else:
-            start_copy = start + limit
-            obj['next'] = url + '?start=%d&limit=%d' % (start_copy, limit)
-        # finally extract result according to bounds
-        obj['results'] = results[(start - 1):(start - 1 + limit)]
-        return obj
+    def get(self, id, page_num):
+        project = Projects.query.filter_by(id=id).first()
+        if not project:
+            abort(404, 'No such project')
+
+        new_status = 'calculation'
+        with session() as db:
+            db.query(Projects).filter(Projects.id == id). \
+                update({'status': new_status})
+
+        data_query = Data.query.filter_by(project_id=id).paginate(page=page_num, error_out=False, max_per_page=2)
+        if not data_query:
+            # abort(400, )
+            return {'message': 'No input data provided'}, 400
+        data = data_query.items
+
+        return {
+                'data': ProjectsCalculationPage.nested_schema.dump(data, many=True).data,
+                'total': data_query.total,
+                'current_page': data_query.page,
+                'per_page': data_query.per_page
+               }, 200
