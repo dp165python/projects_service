@@ -111,6 +111,8 @@ class DataHandler(Resource):
         return {'status': 'write_all_data'}, 201
 
 
+
+# TODO
 # /projects/<id>/calculations
 class ProjectsCalculation(Resource):
     def get(self, id):
@@ -175,6 +177,7 @@ class ProjectsCalculation(Resource):
 #
 #         return {'project': project_schema.dump(project).data, 'data': nested_schema.dump(data, many=True).data}, 200
 
+# TODO
 class ProjectsCalculationPage(Resource):
     def get(self, id, page_num):
         paginated = self.get_paginated_list(Data, '/projects/<id>/calculations/page',

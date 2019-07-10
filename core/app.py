@@ -8,7 +8,11 @@ from core.resources.status_updater import StatusUpdater
 from core.resources.data_handler import DataHandler
 
 from core.resources.projects_calc import ProjectsCalc
-from core.resources.projects_calculation_page import ProjectsCalculationPage
+
+# TODO
+from core.controller import ProjectsCalculationPage
+
+
 app = create_app()
 app.register_blueprint(api_blueprint)
 
