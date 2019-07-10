@@ -1,8 +1,4 @@
-import uuid
-
-from flask import request
 from flask_restful import Resource, abort
-from flask_paginate import Pagination, get_page_parameter
 
 from core.models import Data, Projects
 from core.utils.schemas import DataNestedSchema
@@ -25,13 +21,13 @@ class ProjectsCalculationPage(Resource):
 
         data_query = Data.query.filter_by(project_id=id).paginate(page=page_num, error_out=False, max_per_page=2)
         if not data_query:
-            # abort(400, )
-            return {'message': 'No input data provided'}, 400
+            abort(400, "No input data provided")
+
         data = data_query.items
 
         return {
                 'data': ProjectsCalculationPage.nested_schema.dump(data, many=True).data,
-                'total': data_query.total,
+                'total_data_items': data_query.total,
                 'current_page': data_query.page,
                 'per_page': data_query.per_page
                }, 200

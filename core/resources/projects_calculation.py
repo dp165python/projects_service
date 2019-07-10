@@ -30,8 +30,7 @@ class ProjectsCalculation(Resource):
 
         data = Data.query.filter_by(project_id=id).all()
         if not data:
-            # abort(400, )
-            return {"message": "No input data provided"}, 400
+            abort(400, "No input data provided")
 
         return {
                    'project': ProjectsCalculation.project_schema.dump(project).data,
