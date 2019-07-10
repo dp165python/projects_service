@@ -9,7 +9,7 @@ from core.utils.schemas import ProjectSchema, DataNestedSchema
 
 
 # /projects/<id>/calculations
-class ProjectsCalc(Resource):
+class ProjectsCalculation(Resource):
     project_schema = ProjectSchema()
     nested_schema = DataNestedSchema()
 
@@ -30,11 +30,12 @@ class ProjectsCalc(Resource):
 
         data = Data.query.filter_by(project_id=id).all()
         if not data:
-            abort(400, "No input data provided")
+            # abort(400, )
+            return {"message": "No input data provided"}, 400
 
         return {
-                   'project': ProjectsCalc.project_schema.dump(project).data,
-                   'data': ProjectsCalc.nested_schema.dump(data, many=True).data
+                   'project': ProjectsCalculation.project_schema.dump(project).data,
+                   'data': ProjectsCalculation.nested_schema.dump(data, many=True).data
                }, 200
 
     def post(self, id):
