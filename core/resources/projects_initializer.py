@@ -16,6 +16,8 @@ class ProjectsInitializer(Resource):
 
     def post(self):
         data, errors = ProjectsInitializer.project_schema.load(request.json)
-        added_project = ProjectController(data, errors).create_project()
+
+        contract_id_of_added_project = ProjectController(data, errors).create_project()
+        added_project = Projects.query.filter(Projects.contract_id == contract_id_of_added_project).first()
 
         return {'status': 'create', 'project': ProjectsInitializer.project_schema.dump(added_project).data}, 201
