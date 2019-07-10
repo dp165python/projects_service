@@ -1,9 +1,9 @@
 from flask import request
 from flask_restful import Resource, abort
 
+from core.controllers.project_controller import ProjectController
 from core.models import Projects
 from core.utils.schemas import ProjectSchema
-from core.utils.session import session
 
 
 # /projects/<id>
@@ -14,31 +14,21 @@ class ProjectsResources(Resource):
         project = Projects.query.filter_by(id=id).first()
 
         if not project:
-            abort(404, "No such project")
+            abort(404, error="No such project")
 
-        return {
-                   'name': project.name,
-                   'contract_id': str(project.contract_id),
-                   'status': project.name
-               }, 200
+        return ProjectsResources.project_schema.dump(project).data, 200
 
     # update contract_id
-    def put(self, id):
+    def patch(self, id):
         data, errors = ProjectsResources.project_schema.load(request.json)
 
-        if errors:
-            abort(404, 'error')
+        status = ProjectController(data, errors).update_contract_id(id)
+        updated_project = Projects.query.filter(Projects.id == id).first()
 
-        contract_id = data['contract_id']
-        with session() as db:
-            db.query(Projects).filter(Projects.id == id). \
-                update({'contract_id': contract_id})
-
-        return {'status': 'updated'}, 200
+        return {'status': status, 'project': ProjectsResources.project_schema.dump(updated_project).data}, 200
 
     def delete(self, id):
-        with session() as db:
-            db.query(Projects).filter(Projects.id == id). \
-                delete()
+        deleted_project = ProjectController.delete_project(id)
 
-        return {'status': 'deleted successfully'}, 200
+        return {'status': 'deleted', 'project': ProjectsResources.project_schema.dump(deleted_project).data}, 200
+

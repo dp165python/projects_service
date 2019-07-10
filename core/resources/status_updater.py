@@ -1,24 +1,19 @@
 from flask import request
-from flask_restful import Resource, abort
+from flask_restful import Resource
 
 from core.models import Projects
-from core.utils.schemas import StatusSchema
-from core.utils.session import session
+from core.utils.schemas import StatusSchema, ProjectSchema
+from core.controllers.project_controller import ProjectController
 
 
 # /projects/<id>/status
 class StatusUpdater(Resource):
-    status_schema = StatusSchema()
 
-    def put(self, id):
-        data, errors = StatusSchema.status_schema.load(request.json)
+    def patch(self, id):
+        data, errors = StatusSchema().load(request.json)
 
-        if errors:
-            abort(404, 'invalid status')
+        status = ProjectController(data, errors).update_project_status(id)
 
-        status = data['status']
-        with session() as db:
-            db.query(Projects).filter(Projects.id == id). \
-                update({'status': status})
+        updated_project = Projects.query.filter(Projects.id == id).first()
 
-        return {'status': 'status_updated_successfully'}, 200
+        return {'status': status, 'project': ProjectSchema().dump(updated_project).data}, 200
