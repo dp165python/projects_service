@@ -8,7 +8,7 @@ class StatusSchema(Schema):
 class ProjectSchema(Schema):
     id = fields.Str()
     status = fields.Str()
-    name = fields.Str()
+    name = fields.Str(required=True)
     contract_id = fields.UUID(required=True)
 
 
