@@ -68,12 +68,7 @@ class ProjectController:
                 field_2=data['field_2'],
                 field_3=data['field_3'],
                 field_4=data['field_4'],
-                field_5=data['field_5'],
-                field_6=data['field_6'],
-                field_7=data['field_7'],
-                field_8=data['field_8'],
-                field_9=data['field_9'],
-                field_10=data['field_10']
+                field_5=data['field_5']
             )
             session.add(project_data)
         return 'added'

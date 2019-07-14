@@ -10,11 +10,12 @@ from core.utils.schemas import ProjectSchema
 class ProjectsResources(Resource):
     project_schema = ProjectSchema()
 
+    # get certain project
     def get(self, id):
         project = Projects.query.filter_by(id=id).first()
 
         if not project:
-            abort(404, error="No such project")
+            abort(404, error='Project doesn\'t exist')
 
         return ProjectsResources.project_schema.dump(project).data, 200
 
@@ -27,6 +28,7 @@ class ProjectsResources(Resource):
 
         return {'status': status, 'project': ProjectsResources.project_schema.dump(updated_project).data}, 200
 
+    # delete certain project
     def delete(self, id):
         deleted_project = ProjectController.delete_project(id)
 

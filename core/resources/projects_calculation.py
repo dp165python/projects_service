@@ -21,7 +21,8 @@ class ProjectsCalculation(Resource):
         """
         project = Projects.query.filter_by(id=id).first()
         if not project:
-            abort(404, "No such project")
+            # abort(404, "No such project")
+            return {"message": "No such project"}, 404
 
         new_status = "calculation"
         with session() as db:
