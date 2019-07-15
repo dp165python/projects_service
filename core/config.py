@@ -38,3 +38,10 @@ def create_app():
         migrate.init_app(app, db)
 
     return app
+
+
+class TestConfiguration(object):
+    TESTING = True
+    WTF_CSRF_ENABLED = False
+
+    SQLALCHEMY_DATABASE_URI = 'postgresql://eugene:1401@localhost/test_api.db'
