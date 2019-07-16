@@ -22,7 +22,7 @@ class ProjectsCalculation(Resource):
         project = Projects.query.filter_by(id=id).first()
         if not project:
             # abort(404, "No such project")
-            return {"message": "No such project"}, 404
+            return {"error": "Project doesn\'t exist"}, 404
 
         new_status = "calculation"
         with session() as db:
@@ -47,11 +47,11 @@ class ProjectsCalculation(Resource):
         # obtain certain project
         project = Projects.query.filter_by(id=uuid.UUID(id)).first()
         if not project:
-            abort(404, "No such project")
+            abort(404, "Project doesn\'t exist")
 
         # deserialize input json
         entry_data = request.get_json()
         if not entry_data:
-            return {"message": "No input data provided"}, 400
+            return {"error": "No input data provided"}, 400
         result = entry_data["result"]
         return {"result": result}, 200
