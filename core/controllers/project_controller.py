@@ -37,7 +37,6 @@ class ProjectController:
 
         session.query(Projects).filter(Projects.id == id). \
             update({'status': status})
-
         return 'updated'
 
     @handle_schema_error
@@ -56,6 +55,7 @@ class ProjectController:
         return 'updated'
 
     @handle_schema_error
+    @dbconnect
     def post_data(self, id):
         session = Session()
         if not Projects.query.filter(Projects.id == id).first():
@@ -69,11 +69,6 @@ class ProjectController:
                 field_3=data['field_3'],
                 field_4=data['field_4'],
                 field_5=data['field_5'],
-                field_6=data['field_6'],
-                field_7=data['field_7'],
-                field_8=data['field_8'],
-                field_9=data['field_9'],
-                field_10=data['field_10']
             )
             session.add(project_data)
         return 'added'
