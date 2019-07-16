@@ -25,6 +25,7 @@ class ProjectController:
 
         return contract_id
 
+
     @handle_schema_error
     @dbconnect
     def update_project_status(self, id):
@@ -52,7 +53,7 @@ class ProjectController:
         session.query(Projects).filter(Projects.id == id). \
             update({'contract_id': contract_id})
 
-        return 'updated'
+        return contract_id
 
     @handle_schema_error
     @dbconnect

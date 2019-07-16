@@ -5,6 +5,10 @@ class StatusSchema(Schema):
     status = fields.Str(required=True)
 
 
+class ContractIdSchema(Schema):
+    contract_id = fields.Str(required=True)
+
+
 class ProjectSchema(Schema):
     id = fields.Str()
     status = fields.Str()

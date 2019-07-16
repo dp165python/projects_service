@@ -3,9 +3,9 @@ import uuid
 from flask import request
 from flask_restful import Resource, abort
 
-from core.controllers.session_handler import session
 from core.models import Projects, Data
 from core.utils.schemas import ProjectSchema, DataNestedSchema
+from core.utils.session import session
 
 
 # /projects/<id>/calculations

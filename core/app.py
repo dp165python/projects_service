@@ -1,5 +1,6 @@
-from core.config import create_app
-from core.api import api_blueprint, api
+from .config import create_app
+from .api import api_blueprint, api
+
 
 from core.resources.projects_initializer import ProjectsInitializer
 from core.resources.projects_resources import ProjectsResources
