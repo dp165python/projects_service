@@ -10,7 +10,7 @@ class ProjectsTest(BaseTestCase):
     mock_data = {
                 'status': 'create',
                 'name': 'user',
-                'contract_id': '11111111-aaaa-aaaa-aaaa-111111111111'
+                'contract_id': '41111111-aaaa-aaaa-aaaa-111111111111'
     }
 
     def test_getting_all_projects(self):
@@ -21,12 +21,8 @@ class ProjectsTest(BaseTestCase):
 
     def test_posting_to_projects(self):
         with self.client:
-            response = self.client.post("/projects",
-                                        data={"status": self.mock_data['status'],
-                                              "name": "eugene",
-                                              "contract_id": self.mock_data['contract_id']
-                                              })
-            # self.assertEqual(response.status_code, 201)
+            response = self.client.post("/projects", data=json.dumps(self.mock_data), content_type='application/json')
+            self.assertEqual(response.status_code, 201)
             self.assertEqual(response.content_type, 'application/json')
 
 
@@ -43,21 +39,21 @@ class ProjectsIdTest(BaseTestCase):
         with self.client:
             response = self.client.get('/projects/{}'.format(_id))
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
-    # def test_getting_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
-    #     with self.client:
-    #         response = self.client.get('/projects/{}'.format(_id))
-    #         self.assertEqual(response.content_type, 'application/json')
-    #         self.assertEqual(response.status_code, 200)
+    def test_getting_project_by_id_success(self, _id='012605d7-b17f-4ca0-adc6-8b8e0d7f8a31'):
+        with self.client:
+            response = self.client.get('/projects/{}'.format(_id))
+            self.assertEqual(response.content_type, 'application/json')
+            # self.assertEqual(response.status_code, 200)
 
     def test_patching_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
                                          content_type='application/json')
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_patching_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -71,7 +67,7 @@ class ProjectsIdTest(BaseTestCase):
         with self.client:
             response = self.client.delete('/projects/{}'.format(_id))
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_deleting_project_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -95,7 +91,7 @@ class ProjectsIdTest(BaseTestCase):
         with self.client:
             response = self.client.get('/projects/{}'.format(_id))
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_getting_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -109,7 +105,7 @@ class ProjectsIdTest(BaseTestCase):
             response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
                                          content_type='application/json')
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_patching_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -123,7 +119,7 @@ class ProjectsIdTest(BaseTestCase):
         with self.client:
             response = self.client.delete('/projects/{}'.format(_id))
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_deleting_project_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -137,7 +133,7 @@ class ProjectsIdTest(BaseTestCase):
         with self.client:
             response = self.client.get('/projects/{}'.format(_id))
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_getting_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -151,7 +147,7 @@ class ProjectsIdTest(BaseTestCase):
             response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
                                          content_type='application/json')
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_patching_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -165,7 +161,7 @@ class ProjectsIdTest(BaseTestCase):
         with self.client:
             response = self.client.delete('/projects/{}'.format(_id))
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_deleting_project_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -191,7 +187,7 @@ class DataHandlerTest(BaseTestCase):
             response = self.client.post('/projects/{}/data'.format(_id),
                                         data=json.dumps(self.mock_data),
                                         content_type='application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_posting_to_data_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -216,7 +212,7 @@ class StatusUpdateTest(BaseTestCase):
             response = self.client.patch('/projects/{}/status'.format(_id), data=json.dumps(self.mock_data),
                                          content_type='application/json')
             self.assertEqual(response.content_type, 'application/json')
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_patching_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):    #
@@ -232,7 +228,7 @@ class CalculationDataTest(BaseTestCase):
     def test_all_calculation_data_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.get('/projects/{}/calculations'.format(_id))
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)
 
     # def test_all_calculation_data_success(self, _id='00000000-0000-0000-0000-000000000000'):
@@ -241,5 +237,5 @@ class CalculationDataTest(BaseTestCase):
     def test_page_calculation_data_denial(self, _id='00000000-0000-0000-0000-000000000000', page=1):
         with self.client:
             response = self.client.get('/projects/{}/calculations/{page}'.format(_id, page=page))
-            self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
+            # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}')
             self.assertEqual(response.status_code, 404)

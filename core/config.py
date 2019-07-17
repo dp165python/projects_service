@@ -41,7 +41,14 @@ def create_app():
 
 
 class TestConfiguration(object):
+    DEBUG = True
     TESTING = True
-    WTF_CSRF_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = 'postgresql://eugene:1401@localhost/test_api'
+    # PRESERVE_CONTEXT_ON_EXCEPTION = False
+    # SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql://eugene:1401@localhost/test_api.db'
+
+# config_by_name = dict(
+#     # dev=DevelopmentConfig,
+#     test=TestConfiguration
+# )

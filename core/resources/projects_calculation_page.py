@@ -12,8 +12,8 @@ class ProjectsCalculationPage(Resource):
     def get(self, id, page_num):
         project = Projects.query.filter_by(id=id).first()
         if not project:
-            # abort(404, 'No such project')
-            return {"error": "Project doesn\'t exist"}, 404
+            abort(404, error='Project doesn\'t exist')
+            # return {"error": "Project doesn\'t exist"}, 404
 
         new_status = 'calculation'
         with session() as db:
