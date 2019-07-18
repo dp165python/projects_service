@@ -1,39 +1,32 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 import os
 
-from core.api import api
+from core.constants import APP_ENV_DEV, APP_ENV_PROD
 
 
-DBUSER = 'arthur'
-DBPASS = 'arthur234'
-DBHOST = 'localhost'
-DBPORT = ''
-DBNAME = 'projects'
-
-db = SQLAlchemy()
-migrate = Migrate()
-
-
-def postgres_uri():
-    if os.getenv("DOCKER"):
-        return 'postgresql://postgres@db_projects_service:5432/postgres'
-    return 'postgresql://{user}:{passwd}@{host}/{db}'.format(
-            user=DBUSER,
-            passwd=DBPASS,
-            host=DBHOST,
-            port=DBPORT,
-            db=DBNAME)
+class Config:
+    DB_USER = os.environ.get('DB_USER', 'arthur')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD', 'arthur234')
+    DEFAULT_DB = os.environ.get('DEFAULT_DB', 'postgres')
+    DB_HOST = os.environ.get('DB_HOST', 'localhost')
+    DB_PORT = os.environ.get('DB_PORT', 5432)
+    DEBUG = False
+    HOST = '127.0.0.1'
+    TOKEN = os.environ.get('TOKEN', None)
+    DB_NAME = os.environ.get('DB_NAME', 'projects')
+    DB_URI = 'postgresql://{user}:{password}@{host}:{port}/{db_name}'
 
 
-def create_app():
-    app = Flask(__name__)
-    api.init_app(app)
-    app.config['SQLALCHEMY_DATABASE_URI'] = postgres_uri()
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    with app.app_context():
-        db.init_app(app)
-        migrate.init_app(app, db)
+class DevelopmentConfig(Config):
+    DEBUG = True
 
-    return app
+
+class ProductionConfig(Config):
+    pass
+
+
+def runtime_config():
+    env = os.environ.get("APP_ENV", APP_ENV_DEV).strip().lower()
+    if env == APP_ENV_PROD:
+        return ProductionConfig
+
+    return DevelopmentConfig
