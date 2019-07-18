@@ -9,8 +9,8 @@ class ProjectsTest(BaseTestCase):
     # Test data:
     mock_data = {
                 'status': 'create',
-                'name': 'user',
-                'contract_id': '11111111-aaaa-aaaa-aaaa-111111111111'
+                'name': 'eugene',
+                'contract_id': '31111111-aaaa-aaaa-aaaa-111111111110'
     }
 
     def test_getting_all_projects(self):
@@ -21,11 +21,8 @@ class ProjectsTest(BaseTestCase):
 
     def test_posting_to_projects(self):
         with self.client:
-            response = self.client.post("/projects",
-                                        data={"status": self.mock_data['status'],
-                                              "name": "eugene",
-                                              "contract_id": self.mock_data['contract_id']
-                                              })
+            response = self.client.post("/projects", data=json.dumps(self.mock_data),
+                                        content_type='application/json')
             # self.assertEqual(response.status_code, 201)
             self.assertEqual(response.content_type, 'application/json')
 

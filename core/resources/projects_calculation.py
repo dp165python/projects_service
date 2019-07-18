@@ -31,7 +31,8 @@ class ProjectsCalculation(Resource):
 
         data = Data.query.filter_by(project_id=id).all()
         if not data:
-            abort(400, "No input data provided")
+            # abort(400, "No input data provided")
+            return {"error": "Project doesn\'t exist"}, 404
 
         return {
                    'project': ProjectsCalculation.project_schema.dump(project).data,

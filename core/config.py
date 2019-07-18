@@ -40,8 +40,15 @@ def create_app():
     return app
 
 
-class TestConfiguration(object):
-    TESTING = True
-    WTF_CSRF_ENABLED = False
+class BaseConfiguration(object):
+    DEBUG = False
+    TESTING = False
+    SECRET_KEY = 'flask-session-insecure-secret-key'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://eugene:1401@localhost/projects'
+    SQLALCHEMY_ECHO = False
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql://eugene:1401@localhost/test_api.db'
+
+class TestConfiguration(BaseConfiguration):
+    TESTING = True
+
+    SQLALCHEMY_DATABASE_URI = 'postgresql://eugene:1401@localhost/test_api'

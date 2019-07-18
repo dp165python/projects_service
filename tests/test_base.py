@@ -8,7 +8,7 @@ class BaseTestCase(TestCase):
     """A base test case for projects_service"""
 
     def create_app(self):
-        app.config.get('TestConfiguration')
+        app.config.from_object(TestConfiguration)
         return app
 
     def setUp(self):
