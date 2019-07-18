@@ -4,10 +4,8 @@ from sqlalchemy.orm import sessionmaker
 
 from core.config import runtime_config
 from core.connector import get_connection
-from core.resources.projects_resources import ProjectsInitializer, ProjectsResources
-# from core.resources.projects_resources import ProjectsResources
-#
-# from core.resources.status_updater import StatusUpdater
+from core.resources.projects_resources import ProjectsInitializer, ProjectsResources, ProjectsStatusUpdater, \
+    ProjectsDataResources
 # from core.resources.data_handler import DataHandler
 #
 # from core.resources.projects_calculation import ProjectsCalculation
@@ -43,9 +41,9 @@ api = Api(app, prefix='/projects')
 
 api.add_resource(ProjectsInitializer, '/')
 api.add_resource(ProjectsResources, '/<id>')
-#
-# api.add_resource(DataHandler, '/<id>/data')
-# api.add_resource(StatusUpdater, '/<id>/status')
+
+api.add_resource(ProjectsDataResources, '/<id>/data')
+api.add_resource(ProjectsStatusUpdater, '/<id>/status')
 #
 # api.add_resource(ProjectsCalculation, '/<id>/calculations')
 # api.add_resource(ProjectsCalculationPage, '/<id>/calculations/<int:page_num>')

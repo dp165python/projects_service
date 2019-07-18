@@ -1,5 +1,7 @@
+import uuid
+
 from flask import g, abort
-from core.models.models import Projects
+from core.models.models import Projects, Data
 
 
 class ProjectsController:
@@ -58,29 +60,21 @@ class ProjectsController:
         project.status = status
         return project
 
-    #
-    # @handle_schema_error
-    # @dbconnect
-    # def post_data(self, id):
-    #     session = Session()
-    #     if not Projects.query.filter(Projects.id == id).first():
-    #         abort(404, error='Project doesn\'t exist')
-    #
-    #     for data in self._data['data']:
-    #         project_data = Data(
-    #             project_id=uuid.UUID(id),
-    #             field_1=data['field_1'],
-    #             field_2=data['field_2'],
-    #             field_3=data['field_3'],
-    #             field_4=data['field_4'],
-    #             field_5=data['field_5'],
-    #         )
-    #         session.add(project_data)
-    #     return 'added'
-    #
-    # @staticmethod
-    # @dbconnect
+    def save_projects_data(self, id, data, errors):
+        if errors:
+            abort(404, errors)
 
-    #
-    #
-    #
+        if not g.session.query(Projects).filter(Projects.id == id).first():
+            abort(404, error='Project doesn\'t exist')
+
+        for data in data['data']:
+            project_data = Data(
+                project_id=uuid.UUID(id),
+                field_1=data['field_1'],
+                field_2=data['field_2'],
+                field_3=data['field_3'],
+                field_4=data['field_4'],
+                field_5=data['field_5'],
+            )
+            g.session.add(project_data)
+        return len(data)

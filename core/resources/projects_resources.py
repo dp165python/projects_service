@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from core.controllers.projects_controller import ProjectsController
 from core.controllers.values_to_return import ProjectData
-from core.models.schemas import ProjectSchema, ContractIdSchema, StatusSchema
+from core.models.schemas import ProjectSchema, ContractIdSchema, StatusSchema, DataSchema
 
 
 class BaseProjectsController(Resource):
@@ -46,3 +46,11 @@ class ProjectsStatusUpdater(BaseProjectsController):
         data, errors = StatusSchema().load(request.json)
         project = self.controller.update_project_status(id, data, errors)
         return ProjectData(project).transform_project_data_into_dict(), 200
+
+
+class ProjectsDataResources(BaseProjectsController):
+
+    def post(self, id):
+        data, errors = DataSchema().load(request.json)
+        data_len = self.controller.save_projects_data(id, data, errors)
+        return {'project_id': id, 'writed_fields': data_len}, 201
