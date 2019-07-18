@@ -1,8 +1,5 @@
-import uuid
-
 from flask import g, abort
-from core.controllers.values_to_return import ProjectData
-from core.models.models import Projects, Data
+from core.models.models import Projects
 
 
 class ProjectsController:
@@ -13,11 +10,13 @@ class ProjectsController:
 
     def get_project_by_id(self, id):
         project = g.session.query(Projects).filter(Projects.id == id).first()
+        if not project:
+            abort(404, 'Project with this id does not exist')
         return project
 
     def create_project(self, data, errors):
         if errors:
-            abort(404, errors=errors)
+            abort(404, errors)
 
         project_name = data['name']
         contract_id = data['contract_id']
@@ -25,14 +24,28 @@ class ProjectsController:
         g.session.add(project)
 
         return project
-# def create_project(self):
-    #     session = Session()
-    #     project_name = self._data['name']
-    #     contract_id = self._data['contract_id']
-    #     project = Projects(name=project_name, contract_id=contract_id, status='default')
-    #     session.add(project)
-    #
-    #     return contract_id
+
+    def delete_project(self, id):
+        deleted_project = g.session.query(Projects).filter(Projects.id == id).first()
+
+        if not deleted_project:
+            abort(404, 'Project with this id does not exist')
+        g.session.query(Projects).filter(Projects.id == id).delete()
+
+        return deleted_project
+
+    def update_contract_id(self, id, data, errors):
+        if errors:
+            abort(404, errors)
+
+        contract_id = data['contract_id']
+        project = g.session.query(Projects).filter(Projects.id == id).first()
+
+        if not project:
+            abort(404, 'Project with this id does not exist')
+        g.session.query(Projects).filter(Projects.id == id).update({'contract_id': contract_id})
+
+        return project
 
     # def update_project_status(self, id):
     #     session = Session()
@@ -46,18 +59,7 @@ class ProjectsController:
     #         update({'status': status})
     #     return 'updated'
     #
-    # def update_contract_id(self, id):
-    #     session = Session()
-    #     contract_id = self._data['contract_id']
-    #     project = Projects.query.filter(Projects.id == id).first()
-    #
-    #     if not project:
-    #         abort(404, error='Project doesn\'t exist')
-    #
-    #     session.query(Projects).filter(Projects.id == id). \
-    #         update({'contract_id': contract_id})
-    #
-    #     return contract_id
+
     #
     # @handle_schema_error
     # @dbconnect
@@ -80,17 +82,7 @@ class ProjectsController:
     #
     # @staticmethod
     # @dbconnect
-    # def delete_project(id):
-    #     session = Session()
-    #     deleted_project = Projects.query.filter(Projects.id == id).first()
-    #
-    #     if not deleted_project:
-    #         abort(404, error='Project doesn\'t exist')
-    #
-    #     session.query(Projects).filter(Projects.id == id). \
-    #         delete()
-    #
-    #     return deleted_project
+
     #
     #
     #

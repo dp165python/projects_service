@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from core.config import runtime_config
 from core.connector import get_connection
-from core.resources.projects_initializer import ProjectsInitializer
+from core.resources.projects_resources import ProjectsInitializer, ProjectsResources
 # from core.resources.projects_resources import ProjectsResources
 #
 # from core.resources.status_updater import StatusUpdater
@@ -42,7 +42,7 @@ def close_session(e):
 api = Api(app, prefix='/projects')
 
 api.add_resource(ProjectsInitializer, '/')
-# api.add_resource(ProjectsResources, '/<id>')
+api.add_resource(ProjectsResources, '/<id>')
 #
 # api.add_resource(DataHandler, '/<id>/data')
 # api.add_resource(StatusUpdater, '/<id>/status')
