@@ -22,7 +22,6 @@ class ProjectsController:
         contract_id = data['contract_id']
         project = Projects(name=project_name, contract_id=contract_id, status='default')
         g.session.add(project)
-
         return project
 
     def delete_project(self, id):
@@ -31,7 +30,6 @@ class ProjectsController:
         if not deleted_project:
             abort(404, 'Project with this id does not exist')
         g.session.query(Projects).filter(Projects.id == id).delete()
-
         return deleted_project
 
     def update_contract_id(self, id, data, errors):
@@ -43,22 +41,22 @@ class ProjectsController:
 
         if not project:
             abort(404, 'Project with this id does not exist')
-        g.session.query(Projects).filter(Projects.id == id).update({'contract_id': contract_id})
 
+        project.contract_id = contract_id
         return project
 
-    # def update_project_status(self, id):
-    #     session = Session()
-    #     status = self._data['status']
-    #     project = Projects.query.filter(Projects.id == id).first()
-    #
-    #     if not project:
-    #         abort(404, error='Project doesn\'t exist')
-    #
-    #     session.query(Projects).filter(Projects.id == id). \
-    #         update({'status': status})
-    #     return 'updated'
-    #
+    def update_project_status(self, id, data, errors):
+        if errors:
+            abort(404, errors)
+
+        status = data['status']
+        project = g.sesison.query(Projects).filter(Projects.id == id).first()
+
+        if not project:
+            abort(404, 'Project with this id does not exist')
+
+        project.status = status
+        return project
 
     #
     # @handle_schema_error

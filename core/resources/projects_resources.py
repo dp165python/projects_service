@@ -1,9 +1,9 @@
 from flask import request
 from flask_restful import Resource
 
-from core.controllers.project_controller import ProjectsController
+from core.controllers.projects_controller import ProjectsController
 from core.controllers.values_to_return import ProjectData
-from core.models.schemas import ProjectSchema, ContractIdSchema
+from core.models.schemas import ProjectSchema, ContractIdSchema, StatusSchema
 
 
 class BaseProjectsController(Resource):
@@ -20,12 +20,10 @@ class ProjectsInitializer(BaseProjectsController):
 
     def post(self):
         data, errors = ProjectSchema().load(request.json)
-
         project = self.controller.create_project(data, errors)
         return ProjectData(project).transform_project_data_into_dict(), 201
 
 
-# /projects/<id>
 class ProjectsResources(BaseProjectsController):
 
     def get(self, id):
@@ -39,4 +37,12 @@ class ProjectsResources(BaseProjectsController):
 
     def delete(self, id):
         project = self.controller.delete_project(id)
+        return ProjectData(project).transform_project_data_into_dict(), 200
+
+
+class ProjectsStatusUpdater(BaseProjectsController):
+
+    def patch(self, id):
+        data, errors = StatusSchema().load(request.json)
+        project = self.controller.update_project_status(id, data, errors)
         return ProjectData(project).transform_project_data_into_dict(), 200
