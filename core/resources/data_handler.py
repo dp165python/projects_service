@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from core.controllers.project_controller import ProjectController
+from core.controllers.project_controller_ import ProjectController
 from core.utils.schemas import DataSchema
 
 

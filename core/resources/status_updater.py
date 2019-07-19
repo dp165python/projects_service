@@ -3,7 +3,7 @@ from flask_restful import Resource, abort
 
 from core.models import Projects
 from core.utils.schemas import StatusSchema, ProjectSchema
-from core.controllers.project_controller import ProjectController
+from core.controllers.project_controller_ import ProjectController
 
 
 # /projects/<id>/status
