@@ -24,7 +24,7 @@ class ProjectsController:
         contract_id = data['contract_id']
         project = Projects(name=project_name, contract_id=contract_id, status='default')
         g.session.add(project)
-        return project
+        return g.session.query(Projects).filter(Projects.contract_id == contract_id).first()
 
     def delete_project(self, id):
         deleted_project = g.session.query(Projects).filter(Projects.id == id).first()
@@ -52,7 +52,7 @@ class ProjectsController:
             abort(404, errors)
 
         status = data['status']
-        project = g.sesison.query(Projects).filter(Projects.id == id).first()
+        project = g.session.query(Projects).filter(Projects.id == id).first()
 
         if not project:
             abort(404, 'Project with this id does not exist')
@@ -67,6 +67,7 @@ class ProjectsController:
         if not g.session.query(Projects).filter(Projects.id == id).first():
             abort(404, error='Project doesn\'t exist')
 
+        data_lenght = 0
         for data in data['data']:
             project_data = Data(
                 project_id=uuid.UUID(id),
@@ -76,5 +77,6 @@ class ProjectsController:
                 field_4=data['field_4'],
                 field_5=data['field_5'],
             )
+            data_lenght += 1
             g.session.add(project_data)
-        return len(data)
+        return data_lenght

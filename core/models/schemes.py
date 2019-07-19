@@ -22,11 +22,6 @@ class DataNestedSchema(Schema):
     field_3 = fields.Float()
     field_4 = fields.Integer()
     field_5 = fields.Str()
-    field_6 = fields.Float()
-    field_7 = fields.Integer()
-    field_8 = fields.Integer()
-    field_9 = fields.Integer()
-    field_10 = fields.String()
 
 
 class DataSchema(Schema):

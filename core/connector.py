@@ -36,7 +36,7 @@ def get_engine(uri):
 
 
 def get_connection():
-    return get_engine(get_db_uri(db_name='projects')).connect()
+    return get_engine(get_db_uri()).connect()
 
 
 def create_database(db_name: str = None):
@@ -46,7 +46,6 @@ def create_database(db_name: str = None):
     db_name = db_name or current_app.config['DB_NAME']
     db_engine = get_engine(get_db_uri(db_name=db_name))
 
-    print(default_engine.url)
     if not database_exists(db_engine.url):
         default_engine.execute(f'create database {db_name}')
         default_engine.dispose()
@@ -62,9 +61,6 @@ def drop_database(db_name: str = None):
     db_name = db_name or current_app.config['DB_NAME']
 
     if database_exists(default_engine.url):
-        conn = default_engine.connect()
-        conn.execute('commit')
-        conn.execute(f'drop database {db_name}')
-        conn.close()
+        default_engine.execute(f'drop database {db_name}')
         default_engine.dispose()
 

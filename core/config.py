@@ -11,7 +11,6 @@ class Config:
     DB_PORT = os.environ.get('DB_PORT', 5432)
     DEBUG = False
     HOST = '127.0.0.1'
-    TOKEN = os.environ.get('TOKEN', None)
     DB_NAME = os.environ.get('DB_NAME', 'projects')
     DB_URI = 'postgresql://{user}:{password}@{host}:{port}/{db_name}'
 

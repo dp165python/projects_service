@@ -2,8 +2,8 @@ from flask import request
 from flask_restful import Resource
 
 from core.controllers.projects_controller import ProjectsController
-from core.controllers.values_to_return import ProjectData
-from core.models.schemas import ProjectSchema, ContractIdSchema, StatusSchema, DataSchema
+from core.controllers.values_controller import ProjectData
+from core.models.schemes import ProjectSchema, ContractIdSchema, StatusSchema, DataSchema
 
 
 class BaseProjectsController(Resource):
@@ -53,4 +53,4 @@ class ProjectsDataResources(BaseProjectsController):
     def post(self, id):
         data, errors = DataSchema().load(request.json)
         data_len = self.controller.save_projects_data(id, data, errors)
-        return {'project_id': id, 'writed_fields': data_len}, 201
+        return {'project_id': id, 'objects_wrote': data_len}, 201
