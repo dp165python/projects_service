@@ -65,7 +65,7 @@ class ProjectsController:
             abort(404, errors)
 
         if not g.session.query(Projects).filter(Projects.id == id).first():
-            abort(404, error='Project doesn\'t exist')
+            abort(404, error='Project with this id does not exist')
 
         for data in data['data']:
             project_data = Data(

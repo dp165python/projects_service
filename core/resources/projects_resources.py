@@ -2,7 +2,7 @@ from flask import request
 from flask_restful import Resource
 
 from core.controllers.projects_controller import ProjectsController
-from core.controllers.values_to_return import ProjectData
+from core.controllers.values_controller import ProjectData
 from core.models.schemas import ProjectSchema, ContractIdSchema, StatusSchema, DataSchema
 
 

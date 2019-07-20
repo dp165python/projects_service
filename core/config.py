@@ -1,6 +1,6 @@
 import os
 
-from core.constants import APP_ENV_DEV, APP_ENV_PROD
+from core.constants import APP_ENV_DEV, APP_ENV_PROD, APP_ENV_TEST
 
 
 class Config:
@@ -24,6 +24,7 @@ class TestConfig(Config):
     DEBUG = True
     TESTING = True
     DB_NAME = os.environ.get('DB_NAME', 'test_api')
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
 
 
 class ProductionConfig(Config):
@@ -34,5 +35,7 @@ def runtime_config():
     env = os.environ.get("APP_ENV", APP_ENV_DEV).strip().lower()
     if env == APP_ENV_PROD:
         return ProductionConfig
+    elif env == APP_ENV_TEST:
+        return TestConfig
 
     return DevelopmentConfig
