@@ -1,58 +1,53 @@
-# import uuid
-#
-# from flask import request
-from flask_restful import Resource, abort
-#
-# from core.models import Projects, Data
-# from core.utils.schemas import ProjectSchema, DataNestedSchema
-# from core.controllers.session_handler import session
-#
-#
-# # /projects/<id>/calculations
-class ProjectsCalculation(Resource):
-    pass
-#     project_schema = ProjectSchema()
-#     nested_schema = DataNestedSchema()
-#
-#     def get(self, id):
-#
-#         """
-#         Method to fetch data of the particular project for calculation
-#         :param id: an id of the project
-#         """
-#         project = Projects.query.filter_by(id=id).first()
-#         if not project:
-#             abort(404, "No such project")
-#
-#         new_status = "calculation"
-#         with session() as db:
-#             db.query(Projects).filter(Projects.id == id). \
-#                 update({'status': new_status})
-#
-#         data = Data.query.filter_by(project_id=id).all()
-#         if not data:
-#             # abort(400, )
-#             return {"message": "No input data provided"}, 400
-#
-#         return {
-#                    'project': ProjectsCalculation.project_schema.dump(project).data,
-#                    'data': ProjectsCalculation.nested_schema.dump(data, many=True).data
-#                }, 200
-#
-#     def post(self, id):
-#         """
-#         Method to retrieve  calculated data of the particular project
-#         :param id: an id of the project
-#         """
-#
-#         # obtain certain project
-#         project = Projects.query.filter_by(id=uuid.UUID(id)).first()
-#         if not project:
-#             abort(404, "No such project")
-#
-#         # deserialize input json
-#         entry_data = request.get_json()
-#         if not entry_data:
-#             return {"message": "No input data provided"}, 400
-#         result = entry_data["result"]
-#         return {"result": result}, 200
+from flask import request
+from flask_restful import Resource
+
+from core.controllers.data_to_calculation_controller import DataToCalculationController
+from core.controllers.values_controller import ProjectData
+from core.models.schemes import ProjectSchema, DataNestedSchema
+
+
+nested_schema = DataNestedSchema()
+project_schema = ProjectSchema(exclude=["status", "name"])
+
+
+class BaseDataController(Resource):
+    controller = DataToCalculationController()
+
+
+class ProjectsDataToCalculation(BaseDataController):
+
+    def get(self, id):
+        """
+        Method to fetch data of the particular project for calculation
+        :param id: an id of the project
+        """
+        project = self.controller.get_project_by_id(id=id)
+        data = self.controller.get_project_data_by_id(id)
+
+        return {'project': project_schema.dump(project).data,
+                'data': nested_schema.dump(data, many=True).data}, 200
+
+    def post(self, id):
+        """
+        Method to retrieve  calculated data of the particular project
+        :param id: an id of the project
+        """
+        data, errors = ProjectSchema().load(request.json)
+        project = self.controller.receive_calculation_result(id, data, errors)
+
+        return ProjectData(project).transform_project_data_into_dict(), 201
+
+
+class ProjectsDataToCalculationPage(BaseDataController):
+
+    def get(self, id, page_num):
+        """
+        Method to fetch paginated data of the particular project for calculation
+        :param id: an id of the project
+        :param page_num: a page number of the paginated data
+        """
+        project = self.controller.get_project_by_id(id=id)
+        data = self.controller.get_project_data_by_id_page(id, page_num)
+
+        return {'project': project_schema.dump(project).data,
+                'data': nested_schema.dump(data, many=True).data}, 200

@@ -1,24 +1,30 @@
+import json
 import os
 import pytest
 import unittest
+
+from flask import g, jsonify
 
 from core.app import app
 from core.connector import create_database, drop_database
 
 
+def db_worker(mode):
+    with app.app_context():
+        if mode == 'init':
+            app.config['DB_NAME'] = 'projects_test'
+            create_database()
+        elif mode == 'drop':
+            drop_database()
+
+
 class TestApi(unittest.TestCase):
     def setUp(self) -> None:
         self.client = app.test_client()
-
+        app.config['DB_NAME'] = 'projects_test'
         with app.app_context():
-            print(os.getenv("APP_ENV"))
-            app.config['DB_NAME'] = 'projects_test'
             create_database()
 
     def test_get(self):
         response = self.client.get('/projects/')
-        print(response.data)
-
-    # def tearDown(self) -> None:
-        # with app.app_context():
-        #     drop_database()
+        print(json.loads(response.data))
