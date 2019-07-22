@@ -63,4 +63,3 @@ def drop_database(db_name: str = None):
     if database_exists(default_engine.url):
         default_engine.execute(f'drop database {db_name}')
         default_engine.dispose()
-
