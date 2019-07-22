@@ -17,14 +17,14 @@ class ProjectsTest(BaseTestCase):
         with self.client:
             response = self.client.get("/projects")
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
 
     def test_posting_to_projects(self):
         with self.client:
             response = self.client.post("/projects", data=json.dumps(self.mock_data),
                                         content_type='application/json')
             # self.assertEqual(response.status_code, 201)
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
 
 
 class ProjectsIdTest(BaseTestCase):
@@ -46,14 +46,14 @@ class ProjectsIdTest(BaseTestCase):
     # def test_getting_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
     #     with self.client:
     #         response = self.client.get('/projects/{}'.format(_id))
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         self.assertEqual(response.status_code, 200)
 
     def test_patching_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
                                          content_type='application/json')
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
@@ -61,20 +61,20 @@ class ProjectsIdTest(BaseTestCase):
     #     with self.client:
     #         response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
     #                                          content_type='application/json')
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         self.assertEqual(response.status_code, 200)
 
     def test_deleting_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.delete('/projects/{}'.format(_id))
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
     # def test_deleting_project_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
     #     with self.client:
     #         response = self.client.delete('/projects/{}'.format(_id))
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
     #         self.assertEqual(response.status_code, 404)
 
@@ -86,26 +86,26 @@ class ProjectsIdTest(BaseTestCase):
     #                                           "contract_id": self.mock_data['contract_id']
     #                                           })
     #         self.assertEqual(response.status_code, 201)
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
 
     def test_getting_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.get('/projects/{}'.format(_id))
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
     # def test_getting_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
     #     with self.client:
     #         response = self.client.get('/projects/{}'.format(_id))
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         self.assertEqual(response.status_code, 200)
 
     def test_patching_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
                                          content_type='application/json')
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
@@ -113,41 +113,41 @@ class ProjectsIdTest(BaseTestCase):
     #     with self.client:
     #         response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
     #                                          content_type='application/json')
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         self.assertEqual(response.status_code, 200)
 
     def test_deleting_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.delete('/projects/{}'.format(_id))
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
     # def test_deleting_project_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
     #     with self.client:
     #         response = self.client.delete('/projects/{}'.format(_id))
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         # self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
     #         self.assertEqual(response.status_code, 404)
 
     def test_getting_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.get('/projects/{}'.format(_id))
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
     # def test_getting_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
     #     with self.client:
     #         response = self.client.get('/projects/{}'.format(_id))
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         self.assertEqual(response.status_code, 200)
 
     def test_patching_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
                                          content_type='application/json')
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
@@ -155,20 +155,20 @@ class ProjectsIdTest(BaseTestCase):
     #     with self.client:
     #         response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
     #                                          content_type='application/json')
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         self.assertEqual(response.status_code, 200)
 
     def test_deleting_project_id_denial(self, _id='00000000-0000-0000-0000-000000000000'):
         with self.client:
             response = self.client.delete('/projects/{}'.format(_id))
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
     # def test_deleting_project_id_success(self, _id='00000000-0000-0000-0000-000000000000'):
     #     with self.client:
     #         response = self.client.delete('/projects/{}'.format(_id))
-    #         self.assertEqual(response.content_type, 'application/json')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         self.assertEqual(response.status_code, 201)
 
 
@@ -212,15 +212,15 @@ class StatusUpdateTest(BaseTestCase):
         with self.client:
             response = self.client.patch('/projects/{}/status'.format(_id), data=json.dumps(self.mock_data),
                                          content_type='application/json')
-            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.content_type, 'text/html')
             self.assertEqual(response.data, b'{"error": "Project doesn\'t exist"}\n')
             self.assertEqual(response.status_code, 404)
 
     # def test_patching_project_by_id_success(self, _id='00000000-0000-0000-0000-000000000000'):    #
     #     with self.client:
     #         response = self.client.patch('/projects/{}'.format(_id), data=json.dumps(self.mock_data),
-    #                                          content_type='application/json')
-    #         self.assertEqual(response.content_type, 'application/json')
+    #                                          content_type='text/html')
+    #         self.assertEqual(response.content_type, 'text/html')
     #         self.assertEqual(response.status_code, 201)
 
 
