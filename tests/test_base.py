@@ -5,7 +5,7 @@ from core.config import TestConfig
 from core.connector import create_database, drop_database, create_engine
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
 
 class BaseTestCase(TestCase):
@@ -16,7 +16,9 @@ class BaseTestCase(TestCase):
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://eugene:1401@localhost/test_api'
         # app.config.from_object(TestConfig)
-        db.init_app(app)
+        global db
+        db = create_engine('postgresql://eugene:1401@localhost/test_api').connect()
+        # db.init_app(app)
         app.app_context().push()  # this does the binding
         return app
 
@@ -30,16 +32,14 @@ class BaseTestCase(TestCase):
     #         create_database('test_api')
     #
     def setUp(self):
-        # db = create_engine('postgresql://eugene:1401@localhost/test_api').connect()
-        # self.app = self.create_app()
-        # self.app_context = self.app.app_context()
-        self.app = app.test_client()
-        db.drop_all()
-        db.create_all()
+        self.client = app.test_client()
+        app.config['DB_NAME'] = 'test_api'
+        with app.app_context():
+            create_database()
 
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+    # def tearDown(self):
+    #     # db.session.remove()
+    #     db.drop_all()
     #     # drop_database('test_api')
     #     db.init_app(self.app)
     #     with self.app.app_context():

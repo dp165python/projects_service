@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from core.controllers.data_to_calculation_controller import DataToCalculationController
 from core.controllers.values_controller import ProjectData
-from core.models.schemas import ProjectSchema, DataNestedSchema
+from core.models.schemes import ProjectSchema, DataNestedSchema
 
 
 nested_schema = DataNestedSchema()

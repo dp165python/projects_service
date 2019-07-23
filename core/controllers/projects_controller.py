@@ -67,6 +67,7 @@ class ProjectsController:
         if not g.session.query(Projects).filter(Projects.id == id).first():
             abort(404, error='Project with this id does not exist')
 
+        data_length = 0
         for data in data['data']:
             project_data = Data(
                 project_id=uuid.UUID(id),
@@ -76,5 +77,6 @@ class ProjectsController:
                 field_4=data['field_4'],
                 field_5=data['field_5'],
             )
+            data_length += 1
             g.session.add(project_data)
-        return len(data)
+        return data_length

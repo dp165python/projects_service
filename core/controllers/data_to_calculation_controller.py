@@ -39,7 +39,7 @@ class DataToCalculationController:
         data = g.session.query(Data).filter(Data.project_id == id).all()
         if not data:
             abort(404, 'This project_id data is empty')
-        data_paginated = Paginator(data, page=page_num, per_page=2)
+        data_paginated = Paginator(data, page=page_num, per_page=3)
 
         return data_paginated.items
 
