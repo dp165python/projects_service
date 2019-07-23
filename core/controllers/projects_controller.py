@@ -52,7 +52,7 @@ class ProjectsController:
             abort(404, errors)
 
         status = data['status']
-        project = g.sesison.query(Projects).filter(Projects.id == id).first()
+        project = g.session.query(Projects).filter(Projects.id == id).first()
 
         if not project:
             abort(404, 'Project with this id does not exist')
@@ -65,7 +65,7 @@ class ProjectsController:
             abort(404, errors)
 
         if not g.session.query(Projects).filter(Projects.id == id).first():
-            abort(404, error='Project with this id does not exist')
+            abort(404, 'Project with this id does not exist')
 
         data_length = 0
         for data in data['data']:
