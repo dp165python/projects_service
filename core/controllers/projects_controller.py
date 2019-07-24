@@ -26,7 +26,7 @@ class ProjectsController:
         contract_id = data['contract_id']
         project = Projects(name=project_name, contract_id=contract_id, status='default')
         g.session.add(project)
-        return project
+        return g.session.query(Projects).filter(Projects.contract_id == contract_id).first()
 
     def delete_project(self, id):
         deleted_project = g.session.query(Projects).filter(Projects.id == id).first()
@@ -71,9 +71,10 @@ class ProjectsController:
 
         data_length = 0
 
-        if len(data['data']) <= 5:
+        if len(data['data']) < 5:
             abort(400, 'Incorrect data loaded')
 
+        data_length = 0
         for data in data['data']:
             project_data = Data(
                 project_id=uuid.UUID(id),
@@ -83,6 +84,8 @@ class ProjectsController:
                 field_4=data['field_4'],
                 field_5=data['field_5'],
             )
+
             data_length += 1
             g.session.add(project_data)
         return data_length
+
