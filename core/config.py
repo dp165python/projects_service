@@ -4,8 +4,8 @@ from core.constants import APP_ENV_DEV, APP_ENV_PROD, APP_ENV_TEST
 
 
 class Config:
-    DB_USER = os.environ.get('DB_USER', 'arthur')
-    DB_PASSWORD = os.environ.get('DB_PASSWORD', 'arthur234')
+    DB_USER = os.environ.get('DB_USER', 'postgres')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
     DEFAULT_DB = os.environ.get('DEFAULT_DB', 'postgres')
     DB_HOST = os.environ.get('DB_HOST', 'localhost')
     DB_PORT = os.environ.get('DB_PORT', 5432)
