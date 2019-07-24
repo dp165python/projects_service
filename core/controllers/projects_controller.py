@@ -69,9 +69,6 @@ class ProjectsController:
         if not g.session.query(Projects).filter(Projects.id == id).first():
             abort(404, 'Project with this id does not exist')
 
-        if len(data['data']) < 4:
-            abort(400, 'Incorrect data loaded')
-
         data_length = 0
         for data in data['data']:
             project_data = Data(
