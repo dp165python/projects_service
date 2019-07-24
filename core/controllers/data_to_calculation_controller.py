@@ -23,7 +23,7 @@ class DataToCalculationController:
         return data
 
     def get_project_data_by_id_page(self, id, page_num):
-        if page_num >= 0:
+        if page_num <= 0:
             abort(400, 'Incorrect page info')
 
         project = self.get_project_by_id(id=id)
