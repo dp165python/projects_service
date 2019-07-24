@@ -19,6 +19,8 @@ class ProjectsController:
     def create_project(self, data, errors):
         if errors:
             abort(404, errors)
+        elif len(data) < 3:
+            abort(400, 'Insufficient project data')
 
         project_name = data['name']
         contract_id = data['contract_id']
@@ -65,9 +67,12 @@ class ProjectsController:
             abort(404, errors)
 
         if not g.session.query(Projects).filter(Projects.id == id).first():
-            abort(404, error='Project doesn\'t exist')
+            abort(404, 'Project with this id does not exist')
 
-        data_lenght = 0
+        if len(data['data']) < 5:
+            abort(400, 'Incorrect data loaded')
+
+        data_length = 0
         for data in data['data']:
             project_data = Data(
                 project_id=uuid.UUID(id),
@@ -77,6 +82,8 @@ class ProjectsController:
                 field_4=data['field_4'],
                 field_5=data['field_5'],
             )
-            data_lenght += 1
+
+            data_length += 1
             g.session.add(project_data)
-        return data_lenght
+        return data_length
+

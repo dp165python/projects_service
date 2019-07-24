@@ -11,12 +11,8 @@ class DataToCalculationController:
             abort(404, 'Project with this id does not exist')
         return project
 
-    @staticmethod
-    def get_project_data_by_id(id):
-
-        project = g.session.query(Projects).filter(Projects.id == id).first()
-        if not project:
-            abort(404, 'Project with this id does not exist')
+    def get_project_data_by_id(self, id):
+        project = self.get_project_by_id(id=id)
 
         new_status = "calculation"
         project.status = new_status
@@ -26,12 +22,11 @@ class DataToCalculationController:
             abort(404, 'This project_id data is empty')
         return data
 
-    @staticmethod
-    def get_project_data_by_id_page(id, page_num):
+    def get_project_data_by_id_page(self, id, page_num):
+        if page_num <= 0:
+            abort(400, 'Incorrect page info')
 
-        project = g.session.query(Projects).filter(Projects.id == id).first()
-        if not project:
-            abort(404, 'Project with this id does not exist')
+        project = self.get_project_by_id(id=id)
 
         new_status = "calculation"
         project.status = new_status
@@ -43,8 +38,7 @@ class DataToCalculationController:
 
         return data_paginated.items
 
-    @staticmethod
-    def receive_calculation_result(id, data, errors):
+    def receive_calculation_result(self, id, data, errors):
         if errors:
             abort(404, errors)
 
@@ -52,8 +46,6 @@ class DataToCalculationController:
         if not result:
             return {"warning": "No calculation result provided"}, 400
 
-        project = g.sesison.query(Projects).filter(Projects.id == id).first()
-        if not project:
-            abort(404, 'Project with this id does not exist')
+        project = self.get_project_by_id(id=id)
 
         return project
