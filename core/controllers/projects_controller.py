@@ -19,7 +19,7 @@ class ProjectsController:
     def create_project(self, data, errors):
         if errors:
             abort(404, errors)
-        elif len(data) < 3:
+        elif len(data) < 2:
             abort(400, 'Insufficient project data')
 
         project_name = data['name']

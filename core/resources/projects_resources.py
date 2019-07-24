@@ -4,6 +4,7 @@ from flask_restful import Resource
 from core.controllers.projects_controller import ProjectsController
 from core.controllers.values_controller import ProjectData
 from core.models.schemes import ProjectSchema, ContractIdSchema, StatusSchema, DataSchema
+from core.controllers.authentication_controller import authentication
 
 
 class BaseProjectsController(Resource):
@@ -15,8 +16,9 @@ class ProjectsInitializer(BaseProjectsController):
     def get(self):
         projects = self.controller.get_projects()
         return {
-                'projects': [ProjectData(project_data).transform_project_data_into_dict() for project_data in projects]
-        }, 200
+                   'projects': [ProjectData(project_data).transform_project_data_into_dict() for project_data in
+                                projects]
+               }, 200
 
     def post(self):
         data, errors = ProjectSchema().load(request.json)
@@ -25,6 +27,7 @@ class ProjectsInitializer(BaseProjectsController):
 
 
 class ProjectsResources(BaseProjectsController):
+    # method_decorators = [authentication]
 
     def get(self, id):
         project = self.controller.get_project_by_id(id)
@@ -41,6 +44,7 @@ class ProjectsResources(BaseProjectsController):
 
 
 class ProjectsStatusUpdater(BaseProjectsController):
+    # method_decorators = [authentication]
 
     def patch(self, id):
         data, errors = StatusSchema().load(request.json)
@@ -49,6 +53,7 @@ class ProjectsStatusUpdater(BaseProjectsController):
 
 
 class ProjectsDataResources(BaseProjectsController):
+    # method_decorators = [authentication]
 
     def post(self, id):
         data, errors = DataSchema().load(request.json)
