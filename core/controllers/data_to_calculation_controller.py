@@ -23,13 +23,13 @@ class DataToCalculationController:
         return data
 
     def get_project_data_by_id_page(self, id, page_num):
+        if page_num >= 0:
+            abort(400, 'Incorrect page info')
+
         project = self.get_project_by_id(id=id)
 
         new_status = "calculation"
         project.status = new_status
-
-        if not page_num:
-            abort(404, 'Incorrect page info')
 
         data = g.session.query(Data).filter(Data.project_id == id).all()
         if not data:
@@ -47,7 +47,5 @@ class DataToCalculationController:
             return {"warning": "No calculation result provided"}, 400
 
         project = self.get_project_by_id(id=id)
-        if not project:
-            abort(404, 'Project with this id does not exist')
 
         return project

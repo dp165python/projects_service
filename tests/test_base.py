@@ -18,8 +18,8 @@ class BaseTestCase(TestCase):
     def setUp(self):
         self.client = app.test_client()
         app.config['DB_NAME'] = 'test_api'
-        # with app.app_context():
-        #     create_database()
+        with app.app_context():
+            create_database()
 
     # def tearDown(self):
     #     # db.session.remove()

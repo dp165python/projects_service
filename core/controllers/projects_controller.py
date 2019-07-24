@@ -19,6 +19,8 @@ class ProjectsController:
     def create_project(self, data, errors):
         if errors:
             abort(404, errors)
+        elif len(data) <= 3:
+            abort(400, 'Insufficient project data')
 
         project_name = data['name']
         contract_id = data['contract_id']
@@ -68,6 +70,10 @@ class ProjectsController:
             abort(404, 'Project with this id does not exist')
 
         data_length = 0
+
+        if len(data['data']) <= 5:
+            abort(400, 'Incorrect data loaded')
+
         for data in data['data']:
             project_data = Data(
                 project_id=uuid.UUID(id),
