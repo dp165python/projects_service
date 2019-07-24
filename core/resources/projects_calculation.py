@@ -15,6 +15,7 @@ class BaseDataController(Resource):
 
 
 class ProjectsDataToCalculation(BaseDataController):
+    # method_decorators = [authentication]
 
     def get(self, id):
         """
@@ -39,6 +40,7 @@ class ProjectsDataToCalculation(BaseDataController):
 
 
 class ProjectsDataToCalculationPage(BaseDataController):
+    # method_decorators = [authentication]
 
     def get(self, id, page_num):
         """

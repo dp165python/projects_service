@@ -86,4 +86,3 @@ class ProjectsController:
             data_length += 1
             g.session.add(project_data)
         return data_length
-
