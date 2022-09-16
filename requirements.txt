@@ -12,7 +12,7 @@ Flask-SQLAlchemy==2.3.2
 Flask-Testing==0.7.1
 idna==2.6
 itsdangerous==1.1.0
-Mako==1.0.14
+Mako==1.2.2
 MarkupSafe==1.1.1
 marshmallow==2.19.5
 Paginator==0.5.1
